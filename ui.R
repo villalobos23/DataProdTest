@@ -10,8 +10,10 @@ library(datasets)
 shinyUI(fluidPage(
   
   # Application title
-  titlePanel("Mpg effect on mtcars data set"),
+  titlePanel("Variable Selection effect for simple linear regression"),
 
+  
+  
   # Sidebar with a slider input for number of bins
   sidebarLayout(
     sidebarPanel(
@@ -21,20 +23,35 @@ shinyUI(fluidPage(
                   max = 32,
                   value = 15),
       selectInput("use",
-                  "Characteristic to use",
+                  "Characteristic to use (x)",
                   colnames(mtcars),
                   selected = colnames(mtcars)[1]
                   ),
       selectInput("est",
-                  "Characteristic to estimate",
+                  "Characteristic to estimate (y)",
                   colnames(mtcars),
                   selected = colnames(mtcars)[2]
-                  )
+                  ),
+      checkboxInput("useIntercept","Use Intercept?")
     ),
 
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      tabsetPanel(
+        type="tabs",
+        tabPanel(
+          "Plot",
+          plotOutput("distPlot")
+        ),
+        tabPanel(
+          "Residuals",
+          plotOutput("resPlot")
+        ),
+        tabPanel(
+          "Summary",
+          verbatimTextOutput("summary")
+        )
+      )
     )
   )
 ))
